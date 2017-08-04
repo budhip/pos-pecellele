@@ -17,6 +17,9 @@
 .form-control {
   border-radius: 25px;
 }
+.navbar-brand {
+  padding-top: 5px;
+}
 
 .well {
   background-color: #D1E9EA;
