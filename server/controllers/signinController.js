@@ -24,7 +24,7 @@ function signin(req, res, next) {
     if (user.password == getPasswordUser) {
       var token = jwt.sign({id: user._id, username: user.username, role: user.role}, process.env.SECRET);
       console.log(token);
-      res.send({token: token, role: user.role});
+      res.send({token: token, username: user.username, role: user.role});
     } else {
       res.send('Maaf username atau password salah')
     }

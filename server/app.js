@@ -15,9 +15,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 let signin = require('./routers/signin');
 let users = require('./routers/users');
 let menus = require('./routers/menus');
+let transactions = require('./routers/transactions');
 
 app.use('/api/signin', signin);
 app.use('/api/users', users);
 app.use('/api/menus', menus);
+app.use('/api/transactions', transactions);
 
 app.listen(process.env.PORT || 3000)
