@@ -80,20 +80,20 @@
           </div>
           <div class="row">
             <div class="col-md-5">
-              <form>
+              <form @submit.prevent="insertMenuData">
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">Nama menu</span></label>
-                  <input name="nama_menu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan nama menu">
+                  <input name="nama_menu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan nama menu" v-model="formMenu.nama_menu">
                   <small id="emailHelp" class="form-text text-muted">Masukan nama menu yang sesuai dengan menu yang ada di kartu menu</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">Harga</span></label>
-                  <input name="harga" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan harga">
+                  <input name="harga" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan harga" v-model="formMenu.harga">
                   <small id="emailHelp" class="form-text text-muted">Masukkan harga yang sesuai dengan menu yang didesain</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">Stock</span></label>
-                  <input name="stock" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tentukan stock">
+                  <input name="stock" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tentukan stock" v-model="formMenu.stock">
                   <small id="emailHelp" class="form-text text-muted">Tentukan stock saji menu per harinya.</small>
                 </div>
                 <center><button type="submit" id="btn-submit" class="btn">Submit</button></center>
@@ -107,10 +107,58 @@
                   <th>Stock</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
-                  <td v-for="menu in menus">{{ menu.nama_menu }}</td>
-                  <td v-for="menu in menus">{{ menu.harga }}</td>
-                  <td v-for="menu in menus">{{ menu.stock }}</td>
+                <tr v-for="menu in menus">
+                  <td >{{ menu.nama_menu }}</td>
+                  <td >{{ menu.harga }}</td>
+                  <td >{{ menu.stock }}</td>
+
+                  <!-- Tombol edit, delete, dengan modal di edit -->
+                  <td>
+                    <center>
+                      <button type="button" data-toggle="modal" data-target="#myModal" v-on:click="setEditMenu(menu)" id="btn-edit" class="btn"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Edit menu data</h4>
+                            </div>
+                            <div class="modal-body">
+                              <form @submit.prevent="editMenu(menu._id)">
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">Nama menu</span></label>
+                                  <input name="nama_menu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  v-model="formEditMenu.nama_menu">
+                                  <small id="emailHelp" class="form-text text-muted">Masukan nama menu yang sesuai dengan menu yang ada di kartu menu</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">Harga</span></label>
+                                  <input name="harga" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan harga" v-model="formEditMenu.harga">
+                                  <small id="emailHelp" class="form-text text-muted">Masukkan harga yang sesuai dengan menu yang didesain</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">Stock</span></label>
+                                  <input name="stock" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tentukan stock" v-model="formEditMenu.stock">
+                                  <small id="emailHelp" class="form-text text-muted">Tentukan stock saji menu per harinya.</small>
+                                </div>
+                                <center><button type="submit" id="btn-submit" class="btn">Submit</button></center>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    <button v-on:click="deleteMenu(menu._id)" id="btn-delete" class="btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    </center>
+                  </td>
+
                 </tr>
               </table>
             </div>
@@ -122,7 +170,7 @@
             </div>
           </div>
 
-          <!-- User -->
+          <!-- ============= User ============= -->
           <div class="row">
             <div class="col-md-5">
               <center><h2><span class="label">Add new user</span></h2></center>
@@ -180,6 +228,7 @@
                   <td>budhi@gmail.com</td>
                   <td>admin</td>
                   <td><center><button  id="btn-edit" class="btn"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button> <button  id="btn-delete" class="btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></center></td>
+
                 </tr>
               </table>
             </div>
@@ -201,11 +250,21 @@
       el: '#app',
       data: {
         menus: [],
+        formMenu: {
+          nama_menu: '',
+          harga: '',
+          stock: ''
+        },
+        formEditMenu: {
+          nama_menu: '',
+          harga: '',
+          stock: ''
+        },
         token: localStorage.getItem('token')
       },
       methods: {
         getMenuData: function() {
-          var self = this
+          var self = this;
           axios.get('http://localhost:3000/api/menus')
           .then(menus => {
             console.log(menus.data);
@@ -214,10 +273,56 @@
           .catch(err => {
             console.log(err);
           })
+        },
+        insertMenuData: function() {
+          var self = this;
+          axios.post('http://localhost:3000/api/menus', {
+            nama_menu: self.formMenu.nama_menu,
+            harga: parseInt(self.formMenu.harga),
+            stock: parseInt(self.formMenu.stock)
+          })
+          .then(data => {
+            console.log('ini data', data);
+            console.log("Ini dah masuk" + data);
+            window.location.reload()
+          })
+          .catch(err => {
+            console.log("Proses tambah menu gagal");
+          })
+        },
+        deleteMenu: function(id) {
+          var self = this;
+          axios.delete(`http://localhost:3000/api/menus/${id}`)
+          .then(() => {
+            console.log("Delete berhasil");
+            window.location.reload();
+          })
+          .catch(err => {
+            console.log("Delete gagal");
+          })
+        },
+        setEditMenu: function(menu) {
+          var self = this;
+          self.formEditMenu = menu;
+        },
+        editMenu: function(id) {
+          var self = this
+          axios.put( `http://localhost:3000/api/menus/${id}`, {
+            nama_menu: self.formEditMenu.nama_menu,
+            harga: parseInt(self.formEditMenu.harga),
+            stock: parseInt(self.formEditMenu.stock)
+          })
+          .then(data=> {
+            console.log('data udah masuk', data);
+            window.location.reload()
+          })
+          .catch(err => {
+            console.log("Edit menu gagal!");
+          })
         }
       },
       created: function() {
-        this.getMenuData();
+        this.getMenuData()
       }
     })
   </script>
