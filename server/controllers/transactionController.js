@@ -4,7 +4,7 @@ const User = require('../models/user')
 
 function getAllTransactions(req, res) {
   Transaction.find({})
-  .populate('menulist._id')
+  .populate('menulist', '_id nama_menu')
   .then(result => {
     res.send(result)
   })
