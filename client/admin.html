@@ -30,7 +30,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Brand</a>
+          <a class="navbar-brand" href="#">
+            <img alt="Brand" src="resources/img/brand-logo.png">
+          </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -103,10 +105,12 @@
                   <th>Nama</th>
                   <th>Harga</th>
                   <th>Stock</th>
+                  <th>Actions</th>
                 </tr>
                 <tr>
-                  <td v-for="menu in menus">{{ menu }}</td>
-
+                  <td v-for="menu in menus">{{ menu.nama_menu }}</td>
+                  <td v-for="menu in menus">{{ menu.harga }}</td>
+                  <td v-for="menu in menus">{{ menu.stock }}</td>
                 </tr>
               </table>
             </div>
@@ -166,18 +170,16 @@
                 <tr id="table-head">
                   <th>Nama</th>
                   <th>Username</th>
-                  <th>Password</th>
                   <th>Email</th>
                   <th>Role</th>
-                  <th>Salt</th>
+                  <th>Actions</th>
                 </tr>
                 <tr>
                   <td>Budhi Priyatmojo</td>
                   <td>cuteman</td>
-                  <td>696969</td>
                   <td>budhi@gmail.com</td>
                   <td>admin</td>
-                  <td>ASDw441J</td>
+                  <td><center><button  id="btn-edit" class="btn"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button> <button  id="btn-delete" class="btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></center></td>
                 </tr>
               </table>
             </div>
@@ -198,7 +200,8 @@
     var app = new Vue({
       el: '#app',
       data: {
-        menus: []
+        menus: [],
+        token: localStorage.getItem('token')
       },
       methods: {
         getMenuData: function() {

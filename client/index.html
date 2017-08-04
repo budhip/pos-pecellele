@@ -50,20 +50,6 @@
           password: ''
         },
         methods: {
-          // validasiKasir() {
-          //   if(this.username == 'jumadi' && this.password == 'jumadi') {
-          //     return true
-          //   } else{
-          //     return false
-          //   }
-          // },
-          // validasiAdmin() {
-          //   if(this.username == 'syahrini' && this.password = 'syahrini') {
-          //     return true
-          //   } else {
-          //     return false
-          //   }
-          // },
           doLogin() {
               var self = this
               axios.post('http://localhost:3000/api/signin', {
