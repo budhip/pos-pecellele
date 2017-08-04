@@ -72,7 +72,7 @@
         <div class="col-md-10 col-md-offset-1">
           <div class="row">
             <div class="col-md-5">
-              <center><h2><span class="label">Add new menu</span></h2></center>
+              <center><h2><span class="label">Tambah menu</span></h2></center>
             </div>
             <div class="col-md-7">
               <center><h2><span class="label">Daftar menu</span></h2></center>
@@ -170,10 +170,13 @@
             </div>
           </div>
 
-          <!-- ============= User ============= -->
+          <!-- ********************************************************************************* -->
+          <!-- =================================== USER ======================================== -->
+          <!-- ********************************************************************************* -->
+
           <div class="row">
             <div class="col-md-5">
-              <center><h2><span class="label">Add new user</span></h2></center>
+              <center><h2><span class="label">Tambah user</span></h2></center>
             </div>
             <div class="col-md-7">
               <center><h2><span class="label">Daftar user</span></h2></center>
@@ -181,33 +184,33 @@
           </div>
           <div class="row">
             <div class="col-md-5">
-              <form>
+              <form @submit.prevent="insertUserData">
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">Nama user</span></label>
-                  <input name="nama_menu" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan nama user">
+                  <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan nama lengkap user" v-model="formUser.name">
                   <small id="emailHelp" class="form-text text-muted">Masukan nama user yang sesuai</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">username</span></label>
-                  <input name="harga" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan harga">
-                  <small id="emailHelp" class="form-text text-muted">Masukkan harga yang sesuai dengan menu yang didesain</small>
+                  <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Pilih username" v-model="formUser.username">
+                  <small id="emailHelp" class="form-text text-muted">Masukkan username untuk user</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">password</span></label>
-                  <input name="stock" type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tentukan stock">
-                  <small id="emailHelp" class="form-text text-muted">Tentukan stock saji menu per harinya.</small>
+                  <input name="password" type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan password" v-model="formUser.password">
+                  <small id="emailHelp" class="form-text text-muted">Masukkan password yang aman untuk user</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1"><span class="label">email</span></label>
-                  <input name="stock" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tentukan stock">
-                  <small id="emailHelp" class="form-text text-muted">Tentukan stock saji menu per harinya.</small>
+                  <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan email" v-model="formUser.email">
+                  <small id="emailHelp" class="form-text text-muted">Pilih email untuk user</small>
                 </div>
                 <div class="form-group">
                   <label for="exampleSelect1">Pilih role untuk user</label>
-                  <select class="form-control" id="exampleSelect1">
+                  <select class="form-control" id="exampleSelect1" v-model="formUser.role">
                     <option>Pilih role untuk user</option>
-                    <option>Admin</option>
-                    <option>Kasir</option>
+                    <option>admin</option>
+                    <option>kasir</option>
                   </select>
                 </div>
                 <center><button type="submit" id="btn-submit" class="btn">Submit</button></center>
@@ -222,14 +225,72 @@
                   <th>Role</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
-                  <td>Budhi Priyatmojo</td>
-                  <td>cuteman</td>
-                  <td>budhi@gmail.com</td>
-                  <td>admin</td>
-                  <td><center><button  id="btn-edit" class="btn"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button> <button  id="btn-delete" class="btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></center></td>
+                <tr v-for="user in users">
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.role }}</td>
+                  <td>
+                    <center>
+                      <!-- tombol edit -->
+                      <button type="button" data-toggle="modal" data-target="#myModal2" v-on:click="setEditUser(user)" id="btn-edit" class="btn"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
 
+                      <!-- Modal -->
+                      <div class="modal fade" id="myModal2" role="dialog">
+                        <div class="modal-dialog">
+
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Edit user data</h4>
+                            </div>
+                            <div class="modal-body">
+                              <form @submit.prevent="editUser(user._id)">
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">Nama user</span></label>
+                                  <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan nama lengkap user" v-model="formEditUser.name">
+                                  <small id="emailHelp" class="form-text text-muted">Masukan nama user yang sesuai</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">username</span></label>
+                                  <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Pilih username" v-model="formEditUser.username">
+                                  <small id="emailHelp" class="form-text text-muted">Masukkan username untuk user</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">password</span></label>
+                                  <input name="password" type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan password" v-model="formEditUser.password">
+                                  <small id="emailHelp" class="form-text text-muted">Masukkan password yang aman untuk user</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1"><span class="label">email</span></label>
+                                  <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan email" v-model="formEditUser.email">
+                                  <small id="emailHelp" class="form-text text-muted">Pilih email untuk user</small>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleSelect1">Pilih role untuk user</label>
+                                  <select class="form-control" id="exampleSelect1" v-model="formUser.role">
+                                    <option>Pilih role untuk user</option>
+                                    <option>admin</option>
+                                    <option>kasir</option>
+                                  </select>
+                                </div>
+                                <center><button type="submit" id="btn-submit" class="btn">Submit</button></center>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <button v-on:click="deleteUser(user._id)" id="btn-delete" class="btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    </center>
+                  </td>
                 </tr>
+
               </table>
             </div>
           </div>
@@ -250,19 +311,35 @@
       el: '#app',
       data: {
         menus: [],
+        users: [],
         formMenu: {
           nama_menu: '',
           harga: '',
           stock: ''
+        },
+        formUser: {
+          name: '',
+          username: '',
+          password: '',
+          email: '',
+          role: ''
         },
         formEditMenu: {
           nama_menu: '',
           harga: '',
           stock: ''
         },
+        formEditUser: {
+          name: '',
+          username: '',
+          password: '',
+          email: '',
+          role: '',
+        },
         token: localStorage.getItem('token')
       },
       methods: {
+        // ===================================== MENU FUNCTIONS ===========================================
         getMenuData: function() {
           var self = this;
           axios.get('http://localhost:3000/api/menus')
@@ -319,10 +396,74 @@
           .catch(err => {
             console.log("Edit menu gagal!");
           })
+        },
+        // ================================ USER FUNCTIONS ===========================================
+        getUserData: function() {
+          var self = this;
+          axios.get('http://localhost:3000/api/users')
+          .then(users => {
+            console.log("ini data user",users.data);
+            self.users = users.data
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        },
+        insertUserData: function() {
+          var self = this;
+          axios.post('http://localhost:3000/api/users', {
+            name: self.formUser.name,
+            username: self.formUser.username,
+            password: self.formUser.password,
+            email: self.formUser.email,
+            role: self.formUser.role
+          })
+          .then(data => {
+            console.log('ini data', data);
+            console.log("Ini dah masuk" + data);
+            window.location.reload()
+          })
+          .catch(err => {
+            console.log("Proses tambah menu gagal");
+          })
+        },
+        deleteUser: function(id) {
+          var self = this;
+          axios.delete(`http://localhost:3000/api/users/${id}`)
+          .then(() => {
+            console.log("Delete berhasil");
+            window.location.reload();
+          })
+          .catch(err => {
+            console.log("Delete gagal");
+          })
+        },
+        setEditUser: function(user) {
+          var self = this;
+          self.formEditUser = user;
+          console.log("Isi form edit user", self.formEditUser);
+        },
+        editUser: function(id) {
+          var self = this
+          axios.put( `http://localhost:3000/api/users/${id}`, {
+            name: self.formEditUser.name,
+            username: self.formEditUser.username,
+            password: self.formEditUser.password,
+            email: self.formEditUser.email,
+            role: self.formEditUser.role,
+          })
+          .then(data=> {
+            console.log('data udah masuk', data);
+            window.location.reload()
+          })
+          .catch(err => {
+            console.log("Edit menu gagal!");
+          })
         }
       },
       created: function() {
         this.getMenuData()
+        this.getUserData()
       }
     })
   </script>
