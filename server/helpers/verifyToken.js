@@ -14,7 +14,8 @@ let verifyTokenForAdmin = (req, res, next) => {
 let verifyTokenForAdminKasir = (req, res, next) => {
   let roleauth = jwt.verify(req.headers.token, process.env.SECRET)
   console.log(roleauth);
-  if ((roleauth.role === 'admin') || (roleauth.role === 'kasir' && roleauth.id == req.params.id)) {
+  console.log(req.params.id);
+  if ((roleauth.role === 'admin') || (roleauth.role == 'kasir') ||(roleauth.role == 'kasir' && roleauth.id == req.params.id)) {
     next()
   } else {
     res.send('Maaf anda tidak memiliki akses ke halaman ini')

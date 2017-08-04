@@ -26,6 +26,7 @@ function getOneUser(req, res) {
 function createNewUser(req, res) {
   var salt = genSalt.genRandomString(8);
   var password = req.body.password;
+  console.log(password);
   var hash = genSalt.createHash(password, salt);
   User.create({
     name: req.body.name,
