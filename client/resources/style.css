@@ -17,6 +17,9 @@
 .form-control {
   border-radius: 25px;
 }
+.navbar-brand {
+  padding-top: 5px;
+}
 
 .well {
   background-color: #D1E9EA;
@@ -31,7 +34,7 @@
   color: #fff;
 }
 #btn-edit {
-  background-color: #99F2AD;
+  background-color: #1F897B;
 }
 #btn-delete {
   background-color: #E52240;
@@ -47,6 +50,9 @@
 }
 
 .glyphicon-remove {
+  color: #fff;
+}
+.glyphicon-edit {
   color: #fff;
 }
 
