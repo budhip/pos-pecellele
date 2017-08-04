@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link href="css/font-awesome.min.css" rel="stylesheet"> -->
+    <!-- <link href='css/gfont.css' rel='stylesheet' type='text/css'> -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!--This is hidden/shown automatically after Durandal loads. -->
+    <div id="login">
+    <div class="container" style="display: none;">
+      <div class="overlay loading">
+        <i class="fa fa-spinner fa-5x fa-spin"></i><br/>
+        <h1>Loading...</h1>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="overlay">
+        <h1 class="header">
+
+        </h1>
+
+        <form class="form-signin" role="form">
+          <h3 class="form-signin-heading">Please sign in</h3>
+
+          <div class="input-group margin-bottom-sm">
+            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+            <input class="form-control" type="text" placeholder="Username" required autofocus v-model="username">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-unlock-alt fa-fw"></i></span>
+            <input class="form-control" type="password" placeholder="Password" required  v-model="password">
+          </div>
+
+          <div>
+            <label class="checkbox" title="Check this to have your username saved for the next time you sign in.">
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" @click="onLogin()">Sign in</button>
+        </form>
+
+        <div class="footer">
+          <strong>Version: </strong>0.0.1.1245<em> (<abbr title="This version may have bugs or unfinished features.">&beta;eta</abbr>)</em>
+          <span class="pull-right">&copy; 2014 <a href="http://www.google.com" target="_blank" title="Company">Pecel Lele Company</a></span>
+        </div>
+      </div>
+    </div> <!-- /container -->
+  </div>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <script >
+      var app= new Vue({
+        el:'#login',
+        data: {
+          username: '',
+          password: '',
+          message: ''
+        },
+        methods: {
+          validasiKasir() {
+            if(this.username == 'relina' && this.password == 'relina') {
+              return true
+            } else{
+              return false
+            }
+          },
+          // validasiAdmin() {
+          //   if(this.username == 'syahrini' && this.password = 'syahrini') {
+          //     return true
+          //   } else {
+          //     return false
+          //   }
+          // },
+          onLogin() {
+            if(this.validasiKasir()) {
+              var self = this
+              axios.post('http://localhost:3000/api/signin', {
+                username: self.username,
+                password: self.password
+              })
+              .then( (res) => {
+                console.log('ini data response' + res);
+                if(res.data.success) {
+                  //localStorage.setItem('data',JSON.stringify(res.data.data))
+                  //localStorage.setItem('token', res.data.token)
+                   self.message = res.data.data.username;
+                  window.location.href='kasir.html'
+
+                }
+              })
+              .catch( (err) => {
+                console.log(err);
+                alert('Login error')
+              } )
+            }
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
