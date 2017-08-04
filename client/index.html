@@ -1,32 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <!-- <link href="css/font-awesome.min.css" rel="stylesheet"> -->
     <!-- <link href='css/gfont.css' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script> -->
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
   <body>
     <!--This is hidden/shown automatically after Durandal loads. -->
-    <div id="login">
-    <div class="container" style="display: none;">
-      <div class="overlay loading">
-        <i class="fa fa-spinner fa-5x fa-spin"></i><br/>
-        <h1>Loading...</h1>
-      </div>
-    </div>
-
+  <div id="app">
     <div class="container">
       <div class="overlay">
-        <h1 class="header">
-
-        </h1>
-
-        <form class="form-signin" role="form">
+        <form class="form-signin" role="form" @submit.prevent="doLogin">
           <h3 class="form-signin-heading">Please sign in</h3>
 
           <div class="input-group margin-bottom-sm">
@@ -43,62 +32,46 @@
               <input type="checkbox" value="remember-me"> Remember me
             </label>
           </div>
-          <button class="btn btn-lg btn-primary btn-block" type="submit" @click="onLogin()">Sign in</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
 
         <div class="footer">
-          <strong>Version: </strong>0.0.1.1245<em> (<abbr title="This version may have bugs or unfinished features.">&beta;eta</abbr>)</em>
-          <span class="pull-right">&copy; 2014 <a href="http://www.google.com" target="_blank" title="Company">Pecel Lele Company</a></span>
+          <span class="pull-right">&copy; 2017 <a  target="_blank" title="Company">Pecel Lele Company</a></span>
         </div>
       </div>
     </div> <!-- /container -->
   </div>
     <!-- <script src="js/bootstrap.min.js"></script> -->
-    <script >
+    <script text="text/javascript">
       var app= new Vue({
-        el:'#login',
+        el:'#app',
         data: {
           username: '',
-          password: '',
-          message: ''
+          password: ''
         },
         methods: {
-          validasiKasir() {
-            if(this.username == 'raline' && this.password == 'raline') {
-              return true
-            } else{
-              return false
-            }
-          },
-          // validasiAdmin() {
-          //   if(this.username == 'syahrini' && this.password = 'syahrini') {
-          //     return true
-          //   } else {
-          //     return false
-          //   }
-          // },
-          onLogin() {
-            if(this.validasiKasir()) {
+          doLogin() {
               var self = this
               axios.post('http://localhost:3000/api/signin', {
                 username: self.username,
                 password: self.password
               })
-              .then( (res) => {
-                console.log('ini data response' + res);
-                if(res.data.success) {
-                  //localStorage.setItem('data',JSON.stringify(res.data.data))
-                  //localStorage.setItem('token', res.data.token)
-                   self.message = res.data.data.username;
-                  window.location.href='kasir.html'
+              .then( (response) => {
+                // console.log(response);
+                if(response.data) {
 
+                  console.log(response.data);
+                  console.log('======masuk login');
+                  localStorage.setItem('data_id', response.data.data_id)
+                  localStorage.setItem('token', response.data.token)
+                  alert('Login Succes')
+                  window.location.href='kasir.html'
                 }
               })
               .catch( (err) => {
                 console.log(err);
                 alert('Login error')
               } )
-            }
           }
         }
       })
