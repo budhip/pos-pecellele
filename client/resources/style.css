@@ -4,10 +4,12 @@
 
 .navbar {
   background-color: #39BEA3;
+  opacity: 0.9;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
+
 }
 .nav {
   z-index: 100;
@@ -28,6 +30,12 @@
   background-color: #2DB391;
   color: #fff;
 }
+#btn-edit {
+  background-color: #99F2AD;
+}
+#btn-delete {
+  background-color: #E52240;
+}
 #table-head {
   background-color: #F4F9FC;
 }
@@ -38,7 +46,9 @@
   background-color: #273444;
 }
 
-
+.glyphicon-remove {
+  color: #fff;
+}
 
 .col-md-10 {
   padding-left: 40px;
